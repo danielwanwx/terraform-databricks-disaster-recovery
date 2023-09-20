@@ -12,3 +12,55 @@ subscription_id = "your-subscription-id"
 client_id = "your-client-id"
 client_secret = "your-client-secret"
 tenant_id = "your-tenant-id"
+service_principals = {
+  job = {
+    application_id  = "111111111111111111111"
+    display_name    = "job"
+  }
+  infra = {
+    application_id  = "111111111111111111111"
+    display_name    = "infra"
+  }
+}
+
+# Instance Pools
+instance_pools = {
+  streaming = {
+    name                  = "demo-prv-streaming"
+    min_idle_instances    = 1
+    max_capacity          = 1
+    node_type_id          = "Standard_D4a_v4"
+    auto_termination_min  = 5
+    group_permissions = [
+      {
+        group_name       = "admin"
+        permission_level = "CAN_MANAGE"
+      }
+    ]
+    user_permissions = [
+      {
+        principal         = "job"
+        permission_level  = "CAN_ATTACH_TO"
+      }
+    ]
+  }
+  shared = {
+    name                  = "demo-prv-test"
+    min_idle_instances    = 0
+    max_capacity          = 2
+    node_type_id          = "Standard_D4a_v4"
+    auto_termination_min  = 10
+    group_permissions = [
+      {
+        group_name        = "group-job"
+        permission_level  = "CAN_ATTACH_TO"
+      }
+    ]
+    user_permissions = [
+      {
+        principal         = "job"
+        permission_level  = "CAN_ATTACH_TO"
+      }
+    ]
+  }
+}

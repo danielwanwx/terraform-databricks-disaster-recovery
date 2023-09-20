@@ -58,3 +58,14 @@ module "workspace" {
     "BCDR" = true
   })
 }
+
+module "instance_pools" {
+  source              = "../module/instance-pool"
+
+  service_principals  = var.service_principals
+  instance_pools      = var.instance_pools
+
+  depends_on = [
+    module.workspace
+  ]
+}
