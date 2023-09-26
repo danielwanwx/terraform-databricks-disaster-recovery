@@ -34,7 +34,7 @@ resource "databricks_instance_pool" "pools" {
   ]
 }
 
-resource "databricks_permissions" "pool_group_permissions" {
+resource "databricks_permissions" "pool" {
   for_each = var.instance_pools
 
   instance_pool_id = databricks_instance_pool.pools[each.key].id
@@ -46,16 +46,11 @@ resource "databricks_permissions" "pool_group_permissions" {
       permission_level = access_control.value.permission_level
     }
   }
-}
-
-resource "databricks_permissions" "pool_user_permissions" {
-  for_each         = var.instance_pools
-  instance_pool_id = databricks_instance_pool.pools[each.key].id
 
   dynamic access_control {
     for_each = each.value.user_permissions
     content{
-      service_principal_name  = data.databricks_service_principal.spns[access_control.value.principal].application_id
+      service_principal_name  = var.service_principals[access_control.value.principal].application_id
       permission_level        = access_control.value.permission_level
     }
   }
