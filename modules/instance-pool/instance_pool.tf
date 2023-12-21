@@ -9,12 +9,7 @@ terraform {
 
 data "databricks_spark_version" "lts_runtime" {
   long_term_support = true
-  spark_version     = "13.3.x-scala2.12"
-}
-
-data "databricks_service_principal" "spns" {
-  for_each       = var.service_principals
-  application_id = each.value.application_id
+  spark_version     = "3.4.1"
 }
 
 resource "databricks_instance_pool" "pools" {
